@@ -1,9 +1,12 @@
 package com.example.movieapp.ui
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Visibility
+import androidx.compose.material.icons.rounded.VisibilityOff
 import androidx.lifecycle.ViewModel
 import com.example.movieapp.R
-import com.example.movieapp.ui.state.LoginState
-import com.example.movieapp.ui.state.RegisterState
+import com.example.movieapp.data.state.LoginState
+import com.example.movieapp.data.state.RegisterState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -35,7 +38,7 @@ class AuthViewModel : ViewModel() {
         } else _regState.value = regState.value.copy(mail = mail)
     }
 
-    fun updatePhone(phone:String){
+    fun updatePhone(phone: String) {
         _regState.value = regState.value.copy(phone = phone)
     }
 
@@ -51,14 +54,19 @@ class AuthViewModel : ViewModel() {
 
 
     fun showPassword(showpass: Boolean, screen: Boolean) {
+
         if (screen) {
-            _loginState.value = loginState.value.copy(showPassword = !showpass)
-        }else _regState.value = regState.value.copy(showPassword = !showpass)
+            _loginState.value = loginState.value.copy(
+                showPassword = !showpass,
+                iconVisibility = if (showpass) Icons.Rounded.Visibility else Icons.Rounded.VisibilityOff
+            )
+        } else _regState.value = regState.value.copy(
+            showPassword = !showpass,
+            iconVisibility = if (showpass) Icons.Rounded.Visibility else Icons.Rounded.VisibilityOff
+        )
     }
 
     fun recoveryPass() {
         // TODO : Implement Recovery Passowrd
     }
-
-
 }

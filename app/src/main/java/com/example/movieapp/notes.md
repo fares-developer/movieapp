@@ -17,3 +17,8 @@ EI método popBackStack() tiene dos parámetros obligatorios.
 • inclusive : Es un valor booleano que, si es verdadero, también muestra (quita) la ruta especificada. Si es falso,
 popBackStack() quitará todos los destinos que se encuentren sobre el de inicio (pero no este último), 10 que
 hará que sea la pantalla superior visible para el usuario.
+
+
+# Tareas Pendientes
+- Implementar Pruebas
+- Implementar diseño para diferentes pantallas

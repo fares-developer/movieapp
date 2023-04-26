@@ -1,10 +1,11 @@
-package com.example.movieapp.ui.state
+package com.example.movieapp.data.state
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material.icons.rounded.Phone
+import androidx.compose.material.icons.rounded.VisibilityOff
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.movieapp.R
 
@@ -13,7 +14,7 @@ data class LoginState(
     var mail: String = "",
     var password: String = "",
     var showPassword: Boolean = false,
-    @DrawableRes var icon: Int = R.drawable.round_visibility_off_24,
+    var iconVisibility: ImageVector = Icons.Rounded.VisibilityOff,
     val iconEmail: ImageVector = Icons.Rounded.Email
 )
 
@@ -24,7 +25,7 @@ data class RegisterState(
     var phone: String = "",
     var confirmPassword: String = "",
     var showPassword: Boolean = false,
-    @DrawableRes var iconVisibility: Int = R.drawable.round_visibility_off_24,
+    var iconVisibility: ImageVector = Icons.Rounded.VisibilityOff,
     val iconPhone: ImageVector = Icons.Rounded.Phone,
     val iconEmail: ImageVector = Icons.Rounded.Email
 )

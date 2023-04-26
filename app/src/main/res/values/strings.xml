@@ -18,12 +18,23 @@
     <string name="home">Home</string>
     <string name="authenticate">Authenticate</string>
     <string name="moviedetails">Movie Details</string>
-    <string name="welcome">
-        Bienvenido
-            a
-        MovieApp</string>
+    <string name="welcome">Bienvenido \na \nMovieApp</string>
     <string name="register">Register</string>
     <string name="phone">Phone icon</string>
     <string name="email">Email icon</string>
     <string name="phone_label">Phone Number</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="toprated">Top Rated</string>
+    <string name="popular">Popular</string>
+    <string name="title_movie">Avatar: El sentido del Agua</string>
+    <string name="overview">Overview\t\t</string>
+    <string name="overview_text">Ambientada más de una década después de los acontecimientos de la primera película, \'Avatar: The Way of Water\' empieza contando la historia de la familia Sully (Jake, Neytiri y sus hijos), los problemas que los persiguen, lo que tienen que hacer para mantenerse a salvo, las batallas que libran para seguir con vida y las tragedias que sufren.</string>
+    <string name="cast">Cast</string>
+    <string name="photo_actor">Actor Photo</string>
+    <string name="name_actor">Zoe Saldaña</string>
+    <string name="character">Neytiri</string>
+    <string name="cinema">Cinema</string>
+    <string name="tv">TV</string>
+    <string name="anime">Anime</string>
+    <string name="desc_default">\"General description\"</string>
 </resources>
