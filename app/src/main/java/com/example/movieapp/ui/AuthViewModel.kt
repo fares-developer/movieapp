@@ -5,8 +5,8 @@ import androidx.compose.material.icons.rounded.Visibility
 import androidx.compose.material.icons.rounded.VisibilityOff
 import androidx.lifecycle.ViewModel
 import com.example.movieapp.R
-import com.example.movieapp.data.state.LoginState
-import com.example.movieapp.data.state.RegisterState
+import com.example.movieapp.ui.state.LoginState
+import com.example.movieapp.ui.state.RegisterState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -58,11 +58,11 @@ class AuthViewModel : ViewModel() {
         if (screen) {
             _loginState.value = loginState.value.copy(
                 showPassword = !showpass,
-                iconVisibility = if (showpass) Icons.Rounded.Visibility else Icons.Rounded.VisibilityOff
+                iconVisibility = if (showpass) Icons.Rounded.VisibilityOff else Icons.Rounded.Visibility
             )
         } else _regState.value = regState.value.copy(
             showPassword = !showpass,
-            iconVisibility = if (showpass) Icons.Rounded.Visibility else Icons.Rounded.VisibilityOff
+            iconVisibility = if (showpass) Icons.Rounded.VisibilityOff else Icons.Rounded.Visibility
         )
     }
 

@@ -1,81 +1,76 @@
 package com.example.movieapp.ui.screens
 
-import androidx.annotation.StringRes
+import android.os.Bundle
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.movieapp.R
-import com.example.movieapp.data.DataSource
+import com.example.movieapp.data.model.MovieModel
 import com.example.movieapp.ui.StartViewModel
 import com.example.movieapp.ui.theme.MovieAppTheme
-import com.example.movieapp.ui.theme.Paddings
 import kotlinx.coroutines.delay
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
-enum class MovieScreens(@StringRes val title: Int) {
-    Splash(title = R.string.app_name),
-    Home(title = R.string.home),
-    Auth(title = R.string.authenticate),
-    Login(title = R.string.login),
-    Register(title = R.string.register),
-    Details(title = R.string.moviedetails),
-    TV(title = R.string.tv),
-    Anime(title = R.string.anime)
+enum class MovieScreens {
+    Splash,
+    Home,
+    Auth,
+    Login,
+    Register,
+    Details,
+    TV,
+    Anime
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StartScreen(modifier: Modifier = Modifier) {
+fun StartScreen(
+    modifier: Modifier = Modifier,
+) {
 
     //TODO: Create navController
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = MovieScreens.valueOf(
-        backStackEntry?.destination?.route ?: MovieScreens.Home.name
-    )
+
+    val backS = backStackEntry?.destination?.route
+
+    val currentScreen = when(backS){
+        "${MovieScreens.Details.name}/{idMovie}" -> {
+            MovieScreens.Details
+        }
+        else -> MovieScreens.valueOf(
+            backStackEntry?.destination?.route?: MovieScreens.Home.name
+        )
+    }
+    /*val currentScreen = MovieScreens.valueOf(
+        backStackEntry?.destination?.route?: MovieScreens.Home.name
+    )*/
 
     val viewModel: StartViewModel = viewModel()
     val startUIState by viewModel.startState.collectAsState()
 
-    val destinationsTopBar = listOf(
-        {
-            navController.navigate(MovieScreens.Home.name)
-            viewModel.changeSelectedNavItem(0)
-        },
-        {
-            navController.navigate(MovieScreens.TV.name)
-            viewModel.changeSelectedNavItem(1)
-        },
-        {
-            navController.navigate(MovieScreens.Anime.name)
-            viewModel.changeSelectedNavItem(2)
-        }
+    fun navigateToScreen(screen: MovieScreens) {
+        navController.popBackStack()
+        navController.navigate(screen.name)
+        viewModel.changeSelectedNavItem(screen.ordinal)
+    }
+
+    val destinationsNavBar = listOf(
+        { navigateToScreen(MovieScreens.Home) },
+        { navigateToScreen(MovieScreens.TV) },
+        { navigateToScreen(MovieScreens.Anime) }
     )
 
     //TODO: Create NavHost
@@ -92,7 +87,7 @@ fun StartScreen(modifier: Modifier = Modifier) {
             },
             bottomBar = {
                 AnimatedVisibility(visible = startUIState.navBar) {
-                    MyBottomBar(destinations = destinationsTopBar, vm = viewModel)
+                    MyBottomBar(destinations = destinationsNavBar, vm = viewModel)
                 }
             },
             content = {
@@ -101,25 +96,54 @@ fun StartScreen(modifier: Modifier = Modifier) {
                     startDestination = MovieScreens.Splash.name,
                     modifier = modifier.padding(it)
                 ) {
+
+                    //Check if currentScreen is Home, Tv or Anime for show topbar and navBar
+                    val showBars = when (currentScreen) {
+                        MovieScreens.Home,
+                        MovieScreens.Anime,
+                        MovieScreens.TV -> listOf(true, true)
+
+                        MovieScreens.Details -> listOf(true, false)
+                        else -> listOf(false, false)
+                    }
+
+                    viewModel.showBars(showBars[0], showBars[1])
+                    startUIState.selectedNavItem = when (currentScreen) {
+                        MovieScreens.TV -> 1
+                        MovieScreens.Anime -> 2
+                        else -> 0
+                    }
+
                     composable(route = MovieScreens.Splash.name, content = {
                         SplashScreen()
                         LaunchedEffect(key1 = true) {
-                            delay(2000)
+                            delay(1000)
                             navController.popBackStack()
                             navController.navigate(MovieScreens.Auth.name)
                         }
                     })
 
                     composable(route = MovieScreens.Auth.name, content = {
-                        AuthScreen(modifier = modifier, navController = navController)
+                        AuthScreen(
+                            modifier = modifier,
+                            navigate = listOf(
+                                {
+                                    navController.popBackStack()
+                                    navController.navigate(MovieScreens.Login.name)
+                                },
+                                {
+                                    navController.popBackStack()
+                                    navController.navigate(MovieScreens.Register.name)
+                                },
+                            )
+                        )
                     })
 
                     composable(route = MovieScreens.Login.name, content = {
                         LoginScreen(
                             onclickLoginButton = {
+                                navController.popBackStack()
                                 navController.navigate(MovieScreens.Home.name)
-                                startUIState.topBar = true
-                                startUIState.navBar = true
                             },
                             onclickToSigUp = { navController.navigate(MovieScreens.Register.name) }
                         )
@@ -127,21 +151,24 @@ fun StartScreen(modifier: Modifier = Modifier) {
 
                     composable(route = MovieScreens.Register.name, content = {
                         RegisterScreen(onclickRegister = {
+                            navController.popBackStack()
                             navController.navigate(MovieScreens.Home.name)
-                            startUIState.topBar = true
-                            startUIState.navBar = true
                         })
                     })
 
-                    composable(route = MovieScreens.Home.name, content = {
-                        HomeScreen(
-                            navigateToDetails = { navController.navigate(MovieScreens.Details.name) },
-                        )
-                    })
+                    composable(
+                        route = MovieScreens.Home.name,
+                        content = {
+                            HomeScreen(detailsArgs = navController)
+                        })
 
-                    composable(route = MovieScreens.Details.name, content = {
-                        DetailsScreen()
-                    })
+                    composable(
+                        route = "${MovieScreens.Details.name}/{idMovie}",
+                        content = { backStackEntry ->
+                            val idMovie = backStackEntry.arguments?.getString("idMovie")
+                            DetailsScreen(idMovie = idMovie)
+                        }
+                    )
 
                     composable(route = MovieScreens.TV.name, content = {
                         TvScreen()
@@ -156,72 +183,21 @@ fun StartScreen(modifier: Modifier = Modifier) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MyTopAppBar(
-    modifier: Modifier = Modifier,
-    currentScreen: MovieScreens,
-    canNavigateBack: Boolean,
-    navigateUp: () -> Unit = {},
-    icon: ImageVector = Icons.Rounded.ArrowBack
-) {
-    TopAppBar(
-        modifier = modifier,
-        title = {
-            Text(text = currentScreen.name)
-        },
-        navigationIcon = {
-            if (canNavigateBack && currentScreen == MovieScreens.Details) {
-                IconButton(onClick = navigateUp) {
-                    Image(imageVector = icon, contentDescription = null)
-                    //TODO: Implement icon app
-                }
-            }
-        },
-    )
-}
 
-@Composable
-fun MyBottomBar(
-    modifier: Modifier = Modifier,
-    destinations: List<() -> Unit>,
-    vm: StartViewModel = viewModel()
-) {
-    NavigationBar(modifier = modifier) {
-        DataSource.iconsTopBar.forEachIndexed { i, iconTopBar ->
-            NavigationBarItem(
-                //TODO: IMPLEMENT BEHAVIOR SELECTED ICON
-                selected = vm.startState.value.selectedNavItem == i,
-                onClick = destinations.get(i),
-                icon = {
-                    Icon(
-                        imageVector = iconTopBar.imageVector,
-                        contentDescription = stringResource(id = iconTopBar.description)
-                    )
-                },
-                label = {Text(text = stringResource(iconTopBar.title))}
-            )
-        }
+
+//TODO(): implemnting custom navArg type
+
+val MovieNavType = object : NavType<MovieModel>(isNullableAllowed = false) {
+    override fun get(bundle: Bundle, key: String): MovieModel? {
+        return bundle.getParcelable(key) as MovieModel?
     }
-}
 
-@Composable
-fun SocialMedia(modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier
-            .padding(Paddings.Low.dp)
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        content = {
-            for (l in DataSource.logosAuth) {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        painter = painterResource(id = l.image),
-                        contentDescription = l.description,
-                        modifier = modifier.size(Paddings.High.dp)
-                    )
-                }
-            }
-        }
-    )
+    override fun parseValue(value: String): MovieModel {
+        return Json.decodeFromString(value)
+    }
+
+    override fun put(bundle: Bundle, key: String, value: MovieModel) {
+        bundle.putParcelable(key, value)
+    }
+
 }

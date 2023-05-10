@@ -19,9 +19,9 @@ object DataSource{
     )
 
     val films = listOf(
-        Film(R.drawable.wakanda,"Black Panther: Wakanda Forever", R.string.wakanda_desc),
+        Film(R.drawable.camara,"Black Panther: Wakanda Forever", R.string.wakanda_desc),
         Film(R.drawable.camara,"Black Panther", R.string.wakanda_desc),
-        Film(R.drawable.ver_la_pelicula,"Avengers", R.string.wakanda_desc),
+        Film(R.drawable.camara,"Avengers", R.string.wakanda_desc),
         Film(R.drawable.apple,"Avengers", R.string.wakanda_desc),
     )
     
@@ -31,9 +31,6 @@ object DataSource{
         IconTopBar(Icons.Rounded.Animation,R.string.anime, R.string.desc_default),
     )
 }
-
-
-
 data class Film(@DrawableRes val image: Int, val title:String, @StringRes val description: Int)
 data class LogoInfo(@DrawableRes val image:Int,val description:String)
 data class IconTopBar(val imageVector: ImageVector,@StringRes val title: Int,@StringRes val description: Int )

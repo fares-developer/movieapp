@@ -70,7 +70,7 @@ fun LoginScreen(
                 trailingIcon = {
                     IconButton(onClick = {viewModel.showPassword(true,true)}) {
                         Icon(
-                            imageVector = loginUIState.iconVisibility,
+                            imageVector = loginUIState.iconEmail,
                             contentDescription = stringResource(id = R.string.visibility_icon)
                         )
                     }

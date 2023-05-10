@@ -1,4 +1,4 @@
-package com.example.movieapp.data.state
+package com.example.movieapp.ui.state
 
 data class StartState(
     var topBar: Boolean = false,

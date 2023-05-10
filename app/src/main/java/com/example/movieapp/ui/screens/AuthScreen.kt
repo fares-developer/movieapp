@@ -23,8 +23,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.movieapp.R
 import com.example.movieapp.ui.theme.MovieAppTheme
 import com.example.movieapp.ui.theme.Paddings
@@ -32,7 +30,7 @@ import com.example.movieapp.ui.theme.Paddings
 @Composable
 fun AuthScreen(
     modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController()
+    navigate: List<() -> Unit>
 ) {
     Column(
         modifier = modifier
@@ -72,7 +70,7 @@ fun AuthScreen(
                 verticalArrangement = Arrangement.spacedBy(Paddings.Low.dp),
             ) {
                 Button(
-                    onClick = { navController.navigate(MovieScreens.Login.name) },
+                    onClick = navigate.get(0),
                     modifier = modifier
                         .fillMaxWidth()
                         .height(Paddings.VeryHigh.dp),
@@ -85,7 +83,7 @@ fun AuthScreen(
                 }
 
                 ElevatedButton(
-                    onClick = { navController.navigate(MovieScreens.Register.name) },
+                    onClick = navigate.get(1),
                     modifier = modifier
                         .fillMaxWidth()
                         .height(Paddings.VeryHigh.dp),
@@ -104,6 +102,6 @@ fun AuthScreen(
 @Preview(showBackground = true, showSystemUi = true)
 fun AuthPreview() {
     MovieAppTheme() {
-        AuthScreen()
+        AuthScreen(navigate = listOf())
     }
 }
