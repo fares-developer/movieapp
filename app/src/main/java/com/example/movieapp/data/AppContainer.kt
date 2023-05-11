@@ -15,8 +15,10 @@ interface AppContainer {
 
 class AppContainerImplement : AppContainer {
 
-    private val BASE_URL = "https://api.themoviedb.org/3/movie/"
-
+    companion object {
+        private val BASE_URL = "https://api.themoviedb.org/3/movie/"
+        val IMG_BASE_URL = "https://image.tmdb.org/t/p/original";
+    }
 
     private val retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))

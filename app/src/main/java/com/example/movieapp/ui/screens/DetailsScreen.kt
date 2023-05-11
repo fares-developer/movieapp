@@ -1,41 +1,31 @@
 package com.example.movieapp.ui.screens
 
 import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import com.example.movieapp.MovieApp
 import com.example.movieapp.R
 import com.example.movieapp.data.AppContainerImplement
+import com.example.movieapp.data.model.Cast
 import com.example.movieapp.ui.DetailsViewModel
 import com.example.movieapp.ui.MovieUiState
 import com.example.movieapp.ui.theme.MovieAppTheme
@@ -47,12 +37,14 @@ import com.example.movieapp.ui.theme.readex
 fun DetailsScreen(
     modifier: Modifier = Modifier,
     idMovie: String?,
-    vm:DetailsViewModel = viewModel(factory = DetailsViewModel.DetailsViewModelFactory(
-        AppContainerImplement().movieRepo,idMovie!!.toInt()
-    ))
+    vm: DetailsViewModel = viewModel(
+        factory = DetailsViewModel.DetailsViewModelFactory(
+            AppContainerImplement().movieRepo, idMovie!!.toInt()
+        )
+    )
 ) {
 
-    val movie = vm.detailMovie
+    val movie by vm.detailMovie.collectAsState()
     val uiState = vm.uiState
     Log.d("MovieDetails", movie.toString())
 
@@ -78,24 +70,10 @@ fun DetailsScreen(
                     verticalArrangement = Arrangement.Top
                 ) {
                     items(1) {
-                        AsyncImage(
-                            modifier = modifier
-                                .fillMaxWidth()
-                                .height(
-                                    256.dp
-                                )
-                                .padding(Paddings.Low.dp)
-                                .clip(RoundedCornerShape(Paddings.Medium.dp)),
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data("https://image.tmdb.org/t/p/original" + movie.backdrop_path)
-                                .crossfade(true)
-                                .build(),
-                            placeholder = painterResource(id = R.drawable.loading_img),
-                            error = painterResource(id = R.drawable.baseline_broken_image_24),
-                            contentDescription = movie!!.overview,
-                            contentScale = ContentScale.FillBounds,
+                        myAsyncImage(
+                            backdrop = movie!!.backdrop_path,
+                            description = movie!!.overview
                         )
-
                         Text(
                             modifier = modifier.padding(
                                 top = Paddings.Low.dp,
@@ -141,10 +119,9 @@ fun DetailsScreen(
                             )
                             LazyRow {
                                 items(1) {
-                                    ActorItem()
-                                    ActorItem()
-                                    ActorItem()
-                                    ActorItem()
+                                    movie!!.credits.cast.forEachIndexed { index, cast ->
+                                        ActorItem(cast = cast)
+                                    }
                                 }
                             }
                         }
@@ -156,8 +133,9 @@ fun DetailsScreen(
 
 }
 
+
 @Composable
-fun ActorItem(modifier: Modifier = Modifier) {
+fun ActorItem(modifier: Modifier = Modifier, cast: Cast) {
 
     ElevatedCard(
         modifier = modifier
@@ -171,12 +149,7 @@ fun ActorItem(modifier: Modifier = Modifier) {
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.spacedBy(Paddings.VeryLow.dp)
             ) {
-                Image(
-                    modifier = modifier.size(height = 198.dp, width = 168.dp),
-                    painter = painterResource(id = R.drawable.google),
-                    contentDescription = stringResource(id = R.string.photo_actor),
-                    contentScale = ContentScale.FillBounds
-                )
+                myAsyncImage(backdrop = cast.profile_path, description = cast.name)
                 Column(
                     modifier = modifier.padding(
                         start = Paddings.Low.dp,
@@ -186,11 +159,11 @@ fun ActorItem(modifier: Modifier = Modifier) {
                     verticalArrangement = Arrangement.spacedBy(2.dp)
                 ) {
                     Text(
-                        text = stringResource(id = R.string.name_actor),
+                        text = cast.name,
                         style = MaterialTheme.typography.labelLarge
                     )
                     Text(
-                        text = stringResource(id = R.string.character),
+                        text = cast.character,
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Light
                     )
@@ -198,20 +171,4 @@ fun ActorItem(modifier: Modifier = Modifier) {
             }
         }
     )
-}
-
-/*@Composable
-@Preview(showSystemUi = true, showBackground = true)
-fun DetailsPreview() {
-    MovieAppTheme {
-        DetailsPreview()
-    }
-}*/
-
-@Composable
-@Preview(showBackground = true)
-fun ActorItemPreview() {
-    MovieAppTheme {
-        ActorItem()
-    }
 }

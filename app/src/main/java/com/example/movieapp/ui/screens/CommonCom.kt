@@ -9,13 +9,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Error
 import androidx.compose.material.icons.rounded.WifiTetheringError
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -36,6 +39,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -45,12 +49,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
-import androidx.navigation.Navigator
-import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.movieapp.R
+import com.example.movieapp.data.AppContainerImplement
 import com.example.movieapp.data.DataSource
 import com.example.movieapp.data.model.MovieModel
 import com.example.movieapp.ui.StartViewModel
@@ -61,8 +63,8 @@ import com.example.movieapp.ui.theme.Shapes
 fun MovieRows(
     modifier: Modifier = Modifier,
     @StringRes headTitle: Int,
-    detailsArgs:NavHostController,
-    navToDetails:()-> Unit = {},
+    detailsArgs: NavHostController,
+    navToDetails: () -> Unit = {},
     movies: List<MovieModel>
 ) {
     Column(
@@ -97,8 +99,8 @@ fun MovieRows(
 fun MyItem(
     modifier: Modifier = Modifier,
     film: MovieModel,
-    navToDetails:()-> Unit = {},
-    detailsArgs:NavHostController,
+    navToDetails: () -> Unit = {},
+    detailsArgs: NavHostController,
 ) {
     ElevatedCard(
         modifier = modifier
@@ -113,7 +115,7 @@ fun MyItem(
                 modifier = modifier
                     .size(height = 224.dp, width = 160.dp),
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data("https://image.tmdb.org/t/p/original"+film.poster_path)
+                    .data("https://image.tmdb.org/t/p/original" + film.poster_path)
                     .crossfade(true)
                     .build(),
                 placeholder = painterResource(id = R.drawable.loading_img),
@@ -227,4 +229,44 @@ fun SocialMedia(modifier: Modifier = Modifier) {
             }
         }
     )
+}
+
+@Composable
+fun myAsyncImage(
+    modifier: Modifier = Modifier,
+    backdrop: String?,
+    description: String
+) {
+    if (backdrop != null) {
+        AsyncImage(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(
+                    256.dp
+                )
+                .padding(Paddings.Low.dp)
+                .clip(RoundedCornerShape(Paddings.Medium.dp)),
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(AppContainerImplement.IMG_BASE_URL + backdrop)
+                .crossfade(true)
+                .build(),
+            placeholder = painterResource(id = R.drawable.loading_img),
+            error = painterResource(id = R.drawable.baseline_broken_image_24),
+            contentDescription = description,
+            contentScale = ContentScale.Crop,
+        )
+    } else {
+        Image(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(
+                    256.dp
+                )
+                .padding(Paddings.Low.dp)
+                .clip(RoundedCornerShape(Paddings.Medium.dp)),
+            imageVector = Icons.Rounded.Error,
+            contentDescription = description,
+            contentScale = ContentScale.Crop
+        )
+    }
 }

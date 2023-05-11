@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.movieapp.R
 import com.example.movieapp.ui.AuthViewModel
 import com.example.movieapp.ui.theme.MovieAppTheme
@@ -36,11 +37,17 @@ import com.example.movieapp.ui.theme.Paddings
 fun LoginScreen(
     modifier: Modifier = Modifier,
     viewModel: AuthViewModel = viewModel(),
-    onclickLoginButton: () -> Unit = {},
+    navController: NavController,
+    destiny: MovieScreens,
     onclickToSigUp: () -> Unit = {}
 ) {
 
     val loginUIState by viewModel.loginState.collectAsState()
+    val eventNav = {
+        viewModel.login()
+        navController.popBackStack()
+        navController.navigate(destiny.name)
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -58,7 +65,11 @@ fun LoginScreen(
         Column(
             verticalArrangement = Arrangement.spacedBy(Paddings.Low.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier.padding(top = 32.dp, start = Paddings.VeryHigh.dp, end = Paddings.VeryHigh.dp)
+            modifier = modifier.padding(
+                top = 32.dp,
+                start = Paddings.VeryHigh.dp,
+                end = Paddings.VeryHigh.dp
+            )
         ) {
             OutlinedTextField(
                 modifier = modifier.fillMaxWidth(),
@@ -68,7 +79,7 @@ fun LoginScreen(
                 maxLines = 1,
                 singleLine = true,
                 trailingIcon = {
-                    IconButton(onClick = {viewModel.showPassword(true,true)}) {
+                    IconButton(onClick = { viewModel.showPassword(true, true) }) {
                         Icon(
                             imageVector = loginUIState.iconEmail,
                             contentDescription = stringResource(id = R.string.visibility_icon)
@@ -101,7 +112,7 @@ fun LoginScreen(
                 singleLine = true
             )
             Button(
-                onClick = onclickLoginButton,
+                onClick = eventNav,
                 modifier = modifier
                     .padding(top = Paddings.Medium.dp)
                     .fillMaxWidth()
@@ -149,11 +160,12 @@ fun LoginScreen(
     }
 }
 
+/*
 
 @Composable
 @Preview(showBackground = true, showSystemUi = true)
 fun LoginPreview() {
     MovieAppTheme {
-        LoginScreen(onclickLoginButton = {})
+        LoginScreen()
     }
-}
+}*/

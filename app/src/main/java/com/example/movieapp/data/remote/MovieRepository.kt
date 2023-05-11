@@ -1,5 +1,6 @@
 package com.example.movieapp.data.remote
 
+import com.example.movieapp.data.model.Credits
 import com.example.movieapp.data.model.MovieModel
 import com.example.movieapp.data.model.Results
 import retrofit2.http.GET
@@ -13,13 +14,12 @@ interface MovieRepository {
 
     suspend fun getPopularMovies(): Results
 
-    suspend fun getDetailsMovie(idMovie:Int):MovieModel
-
+    suspend fun getDetailsMovie(idMovie: Int): MovieModel
 }
 
 class MovieRepoImplements(
     private val movieRepo: MovieApiService
-):MovieRepository{
+) : MovieRepository {
 
     override suspend fun getUpcomingMovies(): Results = movieRepo.getUpcomingMovies()
 
@@ -27,7 +27,9 @@ class MovieRepoImplements(
 
     override suspend fun getPopularMovies(): Results = movieRepo.getPopularMovies()
 
-    override suspend fun getDetailsMovie(idMovie: Int): MovieModel{
-        return movieRepo.getDetailsMovie(idMovie = idMovie.toString())
+    override suspend fun getDetailsMovie(idMovie: Int): MovieModel {
+        return movieRepo.getDetailsMovie(idMovie = idMovie.toString()).apply {
+            credits = movieRepo.getCredits(idMovie = idMovie.toString())
+        }
     }
 }

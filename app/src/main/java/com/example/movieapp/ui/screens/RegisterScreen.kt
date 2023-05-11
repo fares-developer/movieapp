@@ -14,13 +14,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.movieapp.R
 import com.example.movieapp.ui.AuthViewModel
 import com.example.movieapp.ui.theme.MovieAppTheme
@@ -30,11 +29,19 @@ import com.example.movieapp.ui.theme.Paddings
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
-    onclickRegister: () -> Unit,
-    viewModel: AuthViewModel = viewModel()
+    navController:NavController,
+    destiny: MovieScreens,
+    vm: AuthViewModel = viewModel()
 ) {
 
-    val regUIState by viewModel.regState.collectAsState()
+    val regUIState by vm.regState.collectAsState()
+    val eventNav = {
+        vm.register()
+        navController.popBackStack()
+        navController.navigate(destiny.name)
+    }
+
+
     MovieAppTheme {
         Column(
             modifier.fillMaxSize(),
@@ -56,7 +63,7 @@ fun RegisterScreen(
                 OutlinedTextField(
                     modifier = modifier,
                     value = regUIState.mail,
-                    onValueChange = { viewModel.updateMail(it, false) },
+                    onValueChange = { vm.updateMail(it, false) },
                     label = { Text(stringResource(id = R.string.label_mail)) },
                     singleLine = true,
                     trailingIcon = {
@@ -69,7 +76,7 @@ fun RegisterScreen(
                 OutlinedTextField(
                     modifier = modifier,
                     value = regUIState.phone,
-                    onValueChange = { viewModel.updatePhone(it) },
+                    onValueChange = { vm.updatePhone(it) },
                     trailingIcon = {
                         Icon(
                             imageVector = regUIState.iconPhone,
@@ -84,10 +91,10 @@ fun RegisterScreen(
                 OutlinedTextField(
                     modifier = modifier,
                     value = regUIState.password,
-                    onValueChange = { viewModel.updatePassword(it, false) },
+                    onValueChange = { vm.updatePassword(it, false) },
                     trailingIcon = {
                         IconButton(onClick = {
-                            viewModel.showPassword(
+                            vm.showPassword(
                                 regUIState.showPassword,
                                 false
                             )
@@ -108,10 +115,10 @@ fun RegisterScreen(
                 OutlinedTextField(
                     modifier = modifier,
                     value = regUIState.confirmPassword,
-                    onValueChange = { viewModel.updateConfirmPassword(it) },
+                    onValueChange = { vm.updateConfirmPassword(it) },
                     trailingIcon = {
                         IconButton(onClick = {
-                            viewModel.showPassword(
+                            vm.showPassword(
                                 regUIState.showPassword,
                                 false
                             )
@@ -131,7 +138,7 @@ fun RegisterScreen(
                 )
             }
             Button(
-                onClick = onclickRegister,
+                onClick = eventNav,
                 modifier = modifier
                     .fillMaxWidth()
                     .padding(horizontal = Paddings.VeryHigh.dp)
@@ -151,10 +158,11 @@ fun RegisterScreen(
     }
 }
 
+/*
 @Composable
 @Preview(showBackground = true)
 fun RegisterPreview() {
     MovieAppTheme {
         RegisterScreen(onclickRegister = {})
     }
-}
+}*/

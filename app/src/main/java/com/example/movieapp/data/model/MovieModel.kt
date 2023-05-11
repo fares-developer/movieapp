@@ -20,5 +20,6 @@ data class MovieModel(
     val title: String = "",
     val video: Boolean = false,
     val vote_average: Double = 0.0,
-    val vote_count: Int = 1
-):Parcelable
+    val vote_count: Int = 1,
+    var credits: Credits = Credits()
+) : Parcelable

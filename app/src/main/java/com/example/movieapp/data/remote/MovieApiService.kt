@@ -1,4 +1,6 @@
 package com.example.movieapp.data.remote
+import com.example.movieapp.data.model.Cast
+import com.example.movieapp.data.model.Credits
 import com.example.movieapp.data.model.MovieModel
 import com.example.movieapp.data.model.Results
 import retrofit2.http.GET
@@ -23,5 +25,11 @@ interface MovieApiService{
         @Path("movie_id") idMovie: String = "238",
         @Query("api_key") api_key:String = apiKey,
     ):MovieModel
+
+    @GET("{movie_id}/credits")
+    suspend fun getCredits(
+        @Path("movie_id") idMovie: String = "238",
+        @Query("api_key") api_key:String = apiKey,
+    ):Credits
 
 }

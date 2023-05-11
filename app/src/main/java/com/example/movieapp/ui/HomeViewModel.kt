@@ -11,7 +11,6 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.movieapp.MovieApp
 import com.example.movieapp.data.model.MovieModel
-import com.example.movieapp.data.model.Results
 import com.example.movieapp.data.remote.MovieRepository
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -21,10 +20,7 @@ class HomeViewModel(
 ) : ViewModel() {
 
     private var _cinemaUiState: MovieUiState by mutableStateOf(MovieUiState.Loading)
-
-    init {
-        getMovies()
-    }
+    init {getMovies()}
 
     val cinemaUiState get() = _cinemaUiState
     var listMovies = mutableListOf<List<MovieModel>>()
@@ -54,6 +50,8 @@ class HomeViewModel(
         }
     }
 }
+
+
 
 sealed interface MovieUiState {
     object Success : MovieUiState

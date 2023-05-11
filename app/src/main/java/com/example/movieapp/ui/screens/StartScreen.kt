@@ -46,12 +46,13 @@ fun StartScreen(
 
     val backS = backStackEntry?.destination?.route
 
-    val currentScreen = when(backS){
+    val currentScreen = when (backS) {
         "${MovieScreens.Details.name}/{idMovie}" -> {
             MovieScreens.Details
         }
+
         else -> MovieScreens.valueOf(
-            backStackEntry?.destination?.route?: MovieScreens.Home.name
+            backStackEntry?.destination?.route ?: MovieScreens.Home.name
         )
     }
     /*val currentScreen = MovieScreens.valueOf(
@@ -126,6 +127,8 @@ fun StartScreen(
                     composable(route = MovieScreens.Auth.name, content = {
                         AuthScreen(
                             modifier = modifier,
+                            navController = navController,
+                            destiny = MovieScreens.Home,
                             navigate = listOf(
                                 {
                                     navController.popBackStack()
@@ -141,19 +144,17 @@ fun StartScreen(
 
                     composable(route = MovieScreens.Login.name, content = {
                         LoginScreen(
-                            onclickLoginButton = {
-                                navController.popBackStack()
-                                navController.navigate(MovieScreens.Home.name)
-                            },
+                            navController = navController,
+                            destiny = MovieScreens.Home,
                             onclickToSigUp = { navController.navigate(MovieScreens.Register.name) }
                         )
                     })
 
                     composable(route = MovieScreens.Register.name, content = {
-                        RegisterScreen(onclickRegister = {
-                            navController.popBackStack()
-                            navController.navigate(MovieScreens.Home.name)
-                        })
+                        RegisterScreen(
+                            navController = navController,
+                            destiny = MovieScreens.Home
+                        )
                     })
 
                     composable(
@@ -182,7 +183,6 @@ fun StartScreen(
         )
     }
 }
-
 
 
 //TODO(): implemnting custom navArg type

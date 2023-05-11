@@ -4,13 +4,21 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Visibility
 import androidx.compose.material.icons.rounded.VisibilityOff
 import androidx.lifecycle.ViewModel
-import com.example.movieapp.R
+import androidx.lifecycle.viewModelScope
+import com.example.movieapp.ui.state.AuthState
 import com.example.movieapp.ui.state.LoginState
 import com.example.movieapp.ui.state.RegisterState
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 class AuthViewModel : ViewModel() {
+
+    private var _authState = MutableStateFlow(AuthState())
+    val authState = _authState.asStateFlow()
 
     private var _loginState = MutableStateFlow(LoginState())
     val loginState = _loginState.asStateFlow()
@@ -18,14 +26,47 @@ class AuthViewModel : ViewModel() {
     private var _regState = MutableStateFlow(RegisterState())
     val regState = _regState.asStateFlow()
 
-    fun login(click: () -> Unit): () -> Unit {
-        //TODO: Implement Firebase Login
-        return click
+    private var auth: FirebaseAuth = Firebase.auth
+
+    init {
+        // Check if user is signed in (non-null) and update UI accordingly.
+        if(_authState.value.user != null){
+            reload()
+        }
     }
 
-    fun register(click: () -> Unit): () -> Unit {
+    private fun reload() {
+        _authState.value.navigateToHome = true
+    }
+
+    fun login() {
+        //TODO: Implement Firebase Login
+        viewModelScope.launch{
+            val logged = auth.signInWithEmailAndPassword(
+                _loginState.value.mail,
+                _loginState.value.password
+            ).isSuccessful
+
+            if (logged) {
+                _authState.value =
+                    _authState.value.copy(user = auth.currentUser, navigateToHome = true)
+            }
+        }
+    }
+
+    fun register(){
         //TODO: Implement Firebase Register
-        return click
+        viewModelScope.launch {
+            val create = auth.createUserWithEmailAndPassword(
+                _regState.value.mail,
+                _regState.value.confirmPassword
+            ).isSuccessful
+
+            if (create){
+                _authState.value.user = auth.currentUser
+                _authState.value.navigateToHome = true
+            }
+        }
     }
 
     /**
