@@ -1,4 +1,4 @@
-package com.example.movieapp.ui
+package com.example.movieapp.ui.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.movieapp.MovieUiState
 import com.example.movieapp.data.model.MovieModel
 import com.example.movieapp.data.remote.MovieRepository
 import kotlinx.coroutines.flow.MutableStateFlow

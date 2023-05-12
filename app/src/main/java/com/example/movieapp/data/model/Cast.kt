@@ -2,21 +2,22 @@ package com.example.movieapp.data.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Parcelize
 @Serializable
 data class Cast(
-    val adult: Boolean,
-    val cast_id: Int,
-    val character: String,
-    val credit_id: String,
-    val gender: Int?,
-    val id: Int,
-    val known_for_department: String,
-    val name: String,
-    val order: Int,
-    val original_name: String,
-    val popularity: Double,
-    val profile_path: String
+    @SerialName("adult")val adult: Boolean,
+    @SerialName("cast_id")val castId: Int,
+    @SerialName("character")val character: String,
+    @SerialName("credit_id")val creditId: String,
+    @SerialName("gender")val gender: Int?,
+    @SerialName("id")val id: Int,
+    @SerialName("known_for_department")val knownForDepartment: String,
+    @SerialName("name")val name: String,
+    @SerialName("order")val order: Int,
+    @SerialName("original_name")val originalName: String,
+    @SerialName("popularity")val popularity: Double,
+    @SerialName("profile_path")val profilePath: String
 ) : Parcelable

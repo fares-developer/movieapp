@@ -23,13 +23,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.movieapp.R
-import com.example.movieapp.ui.AuthViewModel
-import com.example.movieapp.ui.theme.MovieAppTheme
+import com.example.movieapp.ui.viewmodel.AuthViewModel
 import com.example.movieapp.ui.theme.Paddings
 
 @OptIn(ExperimentalMaterial3Api::class)

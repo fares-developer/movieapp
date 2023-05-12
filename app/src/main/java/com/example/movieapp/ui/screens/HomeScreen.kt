@@ -8,12 +8,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.movieapp.MovieUiState
 import com.example.movieapp.R
 import com.example.movieapp.data.model.MovieModel
-import com.example.movieapp.ui.HomeViewModel
-import com.example.movieapp.ui.MovieUiState
 import com.example.movieapp.ui.theme.MovieAppTheme
 import com.example.movieapp.ui.theme.Paddings
+import com.example.movieapp.ui.viewmodel.HomeViewModel
 
 @Composable
 fun HomeScreen(
@@ -23,9 +23,7 @@ fun HomeScreen(
     vm: HomeViewModel = viewModel(factory = HomeViewModel.factory)
 ) {
 
-    val uiState = vm.cinemaUiState
-
-    when(uiState){
+    when(vm.cinemaUiState){
         is MovieUiState.Loading -> {LoadingScreen()}
         is MovieUiState.Success -> {
             MovieAppTheme {
