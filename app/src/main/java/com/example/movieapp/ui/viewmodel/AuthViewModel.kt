@@ -1,4 +1,4 @@
-package com.example.movieapp.ui
+package com.example.movieapp.ui.viewmodel
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Visibility

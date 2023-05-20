@@ -55,7 +55,7 @@ import com.example.movieapp.R
 import com.example.movieapp.data.AppContainerImplement
 import com.example.movieapp.data.DataSource
 import com.example.movieapp.data.model.MovieModel
-import com.example.movieapp.ui.StartViewModel
+import com.example.movieapp.ui.viewmodel.StartViewModel
 import com.example.movieapp.ui.theme.Paddings
 import com.example.movieapp.ui.theme.Shapes
 
@@ -113,7 +113,7 @@ fun MyItem(
                 modifier = modifier
                     .size(height = 224.dp, width = 160.dp),
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data("https://image.tmdb.org/t/p/original" + film.poster_path)
+                    .data("https://image.tmdb.org/t/p/original" + film.posterPath)
                     .crossfade(true)
                     .build(),
                 placeholder = painterResource(id = R.drawable.loading_img),

@@ -1,4 +1,4 @@
-package com.example.movieapp.ui
+package com.example.movieapp.ui.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.movieapp.MovieApp
+import com.example.movieapp.MovieUiState
 import com.example.movieapp.data.model.MovieModel
 import com.example.movieapp.data.remote.MovieRepository
 import kotlinx.coroutines.launch
@@ -50,17 +51,9 @@ class HomeViewModel(
         val factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val app = (this[APPLICATION_KEY] as MovieApp)
-                val movieRepo = app.container.movieRepo
+                val movieRepo = app.container.remoteRepo
                 HomeViewModel(movieRepo = movieRepo)
             }
         }
     }
-}
-
-
-
-sealed interface MovieUiState {
-    object Success : MovieUiState
-    object Loading : MovieUiState
-    object Error : MovieUiState
 }

@@ -23,15 +23,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.movieapp.MovieUiState
 import com.example.movieapp.R
 import com.example.movieapp.data.AppContainerImplement
 import com.example.movieapp.data.model.Cast
-import com.example.movieapp.ui.DetailsViewModel
-import com.example.movieapp.ui.MovieUiState
 import com.example.movieapp.ui.theme.MovieAppTheme
 import com.example.movieapp.ui.theme.Paddings
 import com.example.movieapp.ui.theme.Shapes
 import com.example.movieapp.ui.theme.readex
+import com.example.movieapp.ui.viewmodel.DetailsViewModel
 
 @Composable
 fun DetailsScreen(
@@ -39,7 +39,7 @@ fun DetailsScreen(
     idMovie: String?,
     vm: DetailsViewModel = viewModel(
         factory = DetailsViewModel.DetailsViewModelFactory(
-            AppContainerImplement().movieRepo, idMovie!!.toInt()
+            AppContainerImplement().remoteRepo, idMovie!!.toInt()
         )
     )
 ) {
@@ -71,8 +71,8 @@ fun DetailsScreen(
                 ) {
                     items(1) {
                         myAsyncImage(
-                            backdrop = movie!!.backdrop_path,
-                            description = movie!!.overview
+                            backdrop = movie.backdropPath,
+                            description = movie.overview
                         )
                         Text(
                             modifier = modifier.padding(
@@ -80,7 +80,7 @@ fun DetailsScreen(
                                 bottom = Paddings.Medium.dp,
                                 start = Paddings.Medium.dp
                             ),
-                            text = movie!!.title,
+                            text = movie.title,
                             style = MaterialTheme.typography.headlineSmall,
                             fontFamily = readex,
                             maxLines = 1,
@@ -119,7 +119,7 @@ fun DetailsScreen(
                             )
                             LazyRow {
                                 items(1) {
-                                    movie!!.credits.cast.forEachIndexed { index, cast ->
+                                    movie.credits.cast.forEachIndexed { _, cast ->
                                         ActorItem(cast = cast)
                                     }
                                 }
@@ -149,7 +149,7 @@ fun ActorItem(modifier: Modifier = Modifier, cast: Cast) {
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.spacedBy(Paddings.VeryLow.dp)
             ) {
-                myAsyncImage(backdrop = cast.profile_path, description = cast.name)
+                myAsyncImage(backdrop = cast.profilePath, description = cast.name)
                 Column(
                     modifier = modifier.padding(
                         start = Paddings.Low.dp,

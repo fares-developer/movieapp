@@ -3,8 +3,6 @@ package com.example.movieapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.movieapp.ui.HomeViewModel
 import com.example.movieapp.ui.screens.StartScreen
 
 class MainActivity : ComponentActivity() {
