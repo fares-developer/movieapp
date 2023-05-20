@@ -29,10 +29,16 @@ class HomeViewModel(
         _cinemaUiState = MovieUiState.Loading
         viewModelScope.launch {
             _cinemaUiState = try {
+                val nowPlaying = movieRepo.getNowPlayingMovies()
                 val upcoming = movieRepo.getUpcomingMovies()
                 val toprated = movieRepo.getTopRatedMovies()
                 val popular = movieRepo.getPopularMovies()
-                listMovies = mutableListOf(upcoming.results,toprated.results,popular.results)
+                listMovies = mutableListOf(
+                    nowPlaying.results,
+                    upcoming.results,
+                    toprated.results,
+                    popular.results
+                )
                 MovieUiState.Success
             } catch (e: IOException) {
                 MovieUiState.Error

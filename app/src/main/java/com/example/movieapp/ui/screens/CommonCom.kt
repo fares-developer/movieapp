@@ -64,7 +64,6 @@ fun MovieRows(
     modifier: Modifier = Modifier,
     @StringRes headTitle: Int,
     detailsArgs: NavHostController,
-    navToDetails: () -> Unit = {},
     movies: List<MovieModel>
 ) {
     Column(
@@ -87,7 +86,6 @@ fun MovieRows(
                     MyItem(
                         film = it,
                         detailsArgs = detailsArgs,
-                        navToDetails = navToDetails
                     )
                 }
             }

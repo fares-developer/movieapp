@@ -37,4 +37,5 @@
     <string name="tv">TV</string>
     <string name="anime">Anime</string>
     <string name="desc_default">\"General description\"</string>
+    <string name="now_playing">Now Playing</string>
 </resources>

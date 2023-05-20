@@ -18,7 +18,6 @@ import com.example.movieapp.ui.theme.Paddings
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    navToDetails:()-> Unit = {},
     detailsArgs:NavHostController,
     vm: HomeViewModel = viewModel(factory = HomeViewModel.factory)
 ) {
@@ -33,7 +32,6 @@ fun HomeScreen(
                     modifier = modifier,
                     movies = vm.listMovies,
                     detailsArgs = detailsArgs,
-                    navToDetails = navToDetails
                 )
             }
         }
@@ -45,7 +43,6 @@ fun HomeScreen(
 @Composable
 fun MyRowItems(
     modifier: Modifier = Modifier,
-    navToDetails:()-> Unit = {},
     detailsArgs:NavHostController,
     movies:List<List<MovieModel>> = listOf()
 ) {
@@ -60,15 +57,15 @@ fun MyRowItems(
         item {
             movies.forEachIndexed { index, movies ->
                 val title = when(index){
-                    0 -> R.string.upcoming
-                    1 -> R.string.toprated
+                    0 -> R.string.now_playing
+                    1 -> R.string.upcoming
+                    2 -> R.string.toprated
                     else -> R.string.popular
                 }
                 MovieRows(modifier,
                     title,
                     movies = movies,
                     detailsArgs = detailsArgs,
-                    navToDetails = navToDetails
                 )
             }
         }

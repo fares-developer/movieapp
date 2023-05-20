@@ -11,6 +11,9 @@ import retrofit2.http.Query
 private val apiKey = "8bf11ef65a5f84b75c57754fdd37baf7"
 
 interface MovieApiService{
+    @GET("now_playing")
+    suspend fun getNowPlayingMovies(@Query("api_key") api_key:String = apiKey): Results
+
     @GET("upcoming")
     suspend fun getUpcomingMovies(@Query("api_key") api_key:String = apiKey): Results
 
