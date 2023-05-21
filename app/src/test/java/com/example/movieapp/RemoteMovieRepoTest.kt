@@ -1,6 +1,6 @@
 package com.example.movieapp
 
-import com.example.movieapp.data.remote.MovieRepoImplements
+import com.example.movieapp.data.repository.remote.MovieRepoImplements
 import com.example.movieapp.fake.FakeDataSource
 import com.example.movieapp.fake.FakeMovieApiService
 import kotlinx.coroutines.ExperimentalCoroutinesApi

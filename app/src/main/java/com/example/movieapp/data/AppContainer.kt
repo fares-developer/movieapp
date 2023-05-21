@@ -1,19 +1,23 @@
 package com.example.movieapp.data
 
-import com.example.movieapp.data.remote.MovieApiService
-import com.example.movieapp.data.remote.MovieRepoImplements
-import com.example.movieapp.data.remote.MovieRepository
+import android.content.Context
+import com.example.movieapp.data.repository.local.MovieDB
+import com.example.movieapp.data.repository.local.MovieRepo
+import com.example.movieapp.data.repository.local.MovieRepoImpl
+import com.example.movieapp.data.repository.remote.MovieApiService
+import com.example.movieapp.data.repository.remote.MovieRepoImplements
+import com.example.movieapp.data.repository.remote.MovieRepository
 import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 interface AppContainer {
 
-    val movieRepo: MovieRepository
-
+    val remoterepo: MovieRepository
+    val localrepo: MovieRepo
 }
 
-class AppContainerImplement : AppContainer {
+class AppContainerImplement(context : Context) : AppContainer {
 
     companion object {
         private val BASE_URL = "https://api.themoviedb.org/3/movie/"
@@ -29,8 +33,12 @@ class AppContainerImplement : AppContainer {
         retrofit.create(MovieApiService::class.java)
     }
 
-    override val movieRepo: MovieRepository by lazy {
+    override val remoterepo: MovieRepository by lazy {
         MovieRepoImplements(retrofitService)
+    }
+
+    override val localrepo: MovieRepo by lazy {
+        MovieRepoImpl(MovieDB.getDatabase(context).moviedao())
     }
 
 }

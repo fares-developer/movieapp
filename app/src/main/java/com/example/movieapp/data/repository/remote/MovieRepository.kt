@@ -1,4 +1,4 @@
-package com.example.movieapp.data.remote
+package com.example.movieapp.data.repository.remote
 
 import com.example.movieapp.data.model.MovieModel
 import com.example.movieapp.data.model.Results

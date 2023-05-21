@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.movieapp.data.model.MovieModel
-import com.example.movieapp.data.remote.MovieRepository
+import com.example.movieapp.data.repository.remote.MovieRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -36,7 +36,7 @@ class DetailsViewModel(
         }
     }
 
-    class DetailsViewModelFactory(private val repo: MovieRepository,private val idMovie:Int) : ViewModelProvider.Factory {
+    class DetailsViewModelFactory(private val repo: MovieRepository, private val idMovie:Int) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(DetailsViewModel::class.java)) {
                 return DetailsViewModel(repo, idMovie) as T

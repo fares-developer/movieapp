@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.movieapp.MovieApp
 import com.example.movieapp.R
 import com.example.movieapp.data.AppContainerImplement
 import com.example.movieapp.data.model.Cast
@@ -39,7 +40,7 @@ fun DetailsScreen(
     idMovie: String?,
     vm: DetailsViewModel = viewModel(
         factory = DetailsViewModel.DetailsViewModelFactory(
-            AppContainerImplement().movieRepo, idMovie!!.toInt()
+            AppContainerImplement(MovieApp()).remoterepo, idMovie!!.toInt()
         )
     )
 ) {

@@ -1,6 +1,6 @@
 package com.example.movieapp.fake
 
-import com.example.movieapp.data.remote.MovieRepository
+import com.example.movieapp.data.repository.remote.MovieRepository
 
 class FakeRemoteMovieRepo: MovieRepository {
 

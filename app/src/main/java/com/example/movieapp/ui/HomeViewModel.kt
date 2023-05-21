@@ -11,7 +11,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.movieapp.MovieApp
 import com.example.movieapp.data.model.MovieModel
-import com.example.movieapp.data.remote.MovieRepository
+import com.example.movieapp.data.repository.remote.MovieRepository
 import kotlinx.coroutines.launch
 import java.io.IOException
 
@@ -50,7 +50,7 @@ class HomeViewModel(
         val factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val app = (this[APPLICATION_KEY] as MovieApp)
-                val movieRepo = app.container.movieRepo
+                val movieRepo = app.container.remoterepo
                 HomeViewModel(movieRepo = movieRepo)
             }
         }

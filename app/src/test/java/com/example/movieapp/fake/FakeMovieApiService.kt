@@ -1,6 +1,6 @@
 package com.example.movieapp.fake
 
-import com.example.movieapp.data.remote.MovieApiService
+import com.example.movieapp.data.repository.remote.MovieApiService
 
 class FakeMovieApiService: MovieApiService {
     override suspend fun getUpcomingMovies(api_key: String): Results {
