@@ -23,20 +23,18 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.movieapp.R
-import com.example.movieapp.ui.AuthViewModel
-import com.example.movieapp.ui.theme.MovieAppTheme
 import com.example.movieapp.ui.theme.Paddings
+import com.example.movieapp.ui.viewmodel.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    viewModel: AuthViewModel = viewModel(),
+    viewModel: AuthViewModel = viewModel(factory = AuthViewModel.factory),
     navController: NavController,
     destiny: MovieScreens,
     onclickToSigUp: () -> Unit = {}
@@ -45,8 +43,10 @@ fun LoginScreen(
     val loginUIState by viewModel.loginState.collectAsState()
     val eventNav = {
         viewModel.login()
-        navController.popBackStack()
-        navController.navigate(destiny.name)
+        if(!loginUIState.errorMail && !loginUIState.errorPassword){
+            navController.popBackStack()
+            navController.navigate(destiny.name)
+        }
     }
 
     Column(
@@ -86,6 +86,7 @@ fun LoginScreen(
                         )
                     }
                 },
+                isError = loginUIState.errorMail
             )
             OutlinedTextField(
                 modifier = modifier.fillMaxWidth(),
@@ -109,7 +110,8 @@ fun LoginScreen(
                 if (loginUIState.showPassword) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 maxLines = 1,
-                singleLine = true
+                singleLine = true,
+                isError = loginUIState.errorPassword
             )
             Button(
                 onClick = eventNav,

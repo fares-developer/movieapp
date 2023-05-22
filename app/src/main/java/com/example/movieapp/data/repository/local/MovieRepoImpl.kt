@@ -1,5 +1,7 @@
 package com.example.movieapp.data.repository.local
 
+import com.example.movieapp.data.repository.local.daos.MovieDao
+import com.example.movieapp.data.repository.local.entities.MovieEntity
 import kotlinx.coroutines.flow.Flow
 
 class MovieRepoImpl(private val moviedao: MovieDao) : MovieRepo {

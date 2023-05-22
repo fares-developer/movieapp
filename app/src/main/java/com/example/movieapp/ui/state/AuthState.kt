@@ -20,6 +20,8 @@ data class LoginState(
     var showPassword: Boolean = false,
     var iconVisibility: ImageVector = Icons.Rounded.VisibilityOff,
     val iconEmail: ImageVector = Icons.Rounded.Email,
+    var errorMail: Boolean = false,
+    var errorPassword: Boolean = false
 )
 
 data class RegisterState(
@@ -31,5 +33,8 @@ data class RegisterState(
     var showPassword: Boolean = false,
     var iconVisibility: ImageVector = Icons.Rounded.VisibilityOff,
     val iconPhone: ImageVector = Icons.Rounded.Phone,
-    val iconEmail: ImageVector = Icons.Rounded.Email
+    val iconEmail: ImageVector = Icons.Rounded.Email,
+    var errorMail: Boolean = false,
+    var errorPassword: Boolean = false,
+    var errorCPassword: Boolean = false
 )

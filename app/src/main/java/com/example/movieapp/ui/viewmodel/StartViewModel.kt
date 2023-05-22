@@ -1,4 +1,4 @@
-package com.example.movieapp.ui
+package com.example.movieapp.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.example.movieapp.ui.state.StartState

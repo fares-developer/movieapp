@@ -1,9 +1,10 @@
-package com.example.movieapp.data.repository.local
+package com.example.movieapp.data.repository.local.daos
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.movieapp.data.repository.local.entities.MovieEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -24,15 +25,15 @@ interface MovieDao {
 
     //Select
     @Query("select * from movies where groupmovie= :groupmovie")
-    suspend fun getNowPlayingMovies(groupmovie:String): Flow<List<MovieEntity>>
+    fun getNowPlayingMovies(groupmovie:String): Flow<List<MovieEntity>>
 
     @Query("select * from movies where groupmovie= :groupmovie")
-    suspend fun getUpcomingMovies(groupmovie:String): Flow<List<MovieEntity>>
+    fun getUpcomingMovies(groupmovie:String): Flow<List<MovieEntity>>
 
     @Query("select * from movies where groupmovie= :groupmovie")
-    suspend fun getTopRatedMovies(groupmovie:String): Flow<List<MovieEntity>>
+    fun getTopRatedMovies(groupmovie:String): Flow<List<MovieEntity>>
 
     @Query("select * from movies where groupmovie= :groupmovie")
-    suspend fun getPopularMovies(groupmovie:String): Flow<List<MovieEntity>>
+    fun getPopularMovies(groupmovie:String): Flow<List<MovieEntity>>
 
 }

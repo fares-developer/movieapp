@@ -1,10 +1,18 @@
-package com.example.movieapp.ui
+package com.example.movieapp.ui.viewmodel
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Visibility
 import androidx.compose.material.icons.rounded.VisibilityOff
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.movieapp.MainActivity
+import com.example.movieapp.MovieApp
+import com.example.movieapp.data.repository.local.UserRepo
+import com.example.movieapp.data.repository.local.UserRepoImpl
+import com.example.movieapp.data.repository.local.entities.UserEntity
 import com.example.movieapp.ui.state.AuthState
 import com.example.movieapp.ui.state.LoginState
 import com.example.movieapp.ui.state.RegisterState
@@ -15,7 +23,20 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class AuthViewModel : ViewModel() {
+class AuthViewModel(
+    private val userRepo: UserRepoImpl
+) : ViewModel() {
+
+    companion object {
+        val factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val app =
+                    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as MovieApp)
+                val userRepo = app.container.userRepo
+                AuthViewModel(userRepo = userRepo)
+            }
+        }
+    }
 
     private var _authState = MutableStateFlow(AuthState())
     val authState = _authState.asStateFlow()
@@ -30,7 +51,7 @@ class AuthViewModel : ViewModel() {
 
     init {
         // Check if user is signed in (non-null) and update UI accordingly.
-        if(_authState.value.user != null){
+        if (_authState.value.user != null) {
             reload()
         }
     }
@@ -47,9 +68,13 @@ class AuthViewModel : ViewModel() {
                 _loginState.value.password
             ).isSuccessful
 
-            if (logged) {
+            if(logged){
                 _authState.value =
                     _authState.value.copy(user = auth.currentUser, navigateToHome = true)
+                _authState.value.user = auth.currentUser
+            }else {
+                _loginState.value.errorMail = true
+                _loginState.value.errorPassword = true
             }
         }
     }
@@ -65,6 +90,10 @@ class AuthViewModel : ViewModel() {
             if (create){
                 _authState.value.user = auth.currentUser
                 _authState.value.navigateToHome = true
+            } else {
+                _regState.value.errorMail = true
+                _regState.value.errorPassword = true
+                _regState.value.errorCPassword = true
             }
         }
     }

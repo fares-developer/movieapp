@@ -3,8 +3,8 @@ package com.example.movieapp
 import com.example.movieapp.fake.FakeDataSource
 import com.example.movieapp.fake.FakeRemoteMovieRepo
 import com.example.movieapp.rules.TestDispatcherRule
-import com.example.movieapp.ui.HomeViewModel
-import com.example.movieapp.ui.MovieUiState
+import com.example.movieapp.ui.viewmodel.HomeViewModel
+import com.example.movieapp.ui.viewmodel.MovieUiState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals

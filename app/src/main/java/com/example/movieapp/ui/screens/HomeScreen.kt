@@ -10,8 +10,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.movieapp.R
 import com.example.movieapp.data.model.MovieModel
-import com.example.movieapp.ui.HomeViewModel
-import com.example.movieapp.ui.MovieUiState
+import com.example.movieapp.ui.viewmodel.HomeViewModel
+import com.example.movieapp.ui.viewmodel.MovieUiState
 import com.example.movieapp.ui.theme.MovieAppTheme
 import com.example.movieapp.ui.theme.Paddings
 

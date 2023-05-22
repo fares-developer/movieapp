@@ -1,4 +1,4 @@
-package com.example.movieapp.ui
+package com.example.movieapp.ui.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -50,7 +50,7 @@ class HomeViewModel(
         val factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val app = (this[APPLICATION_KEY] as MovieApp)
-                val movieRepo = app.container.remoterepo
+                val movieRepo = app.container.remoteRepo
                 HomeViewModel(movieRepo = movieRepo)
             }
         }

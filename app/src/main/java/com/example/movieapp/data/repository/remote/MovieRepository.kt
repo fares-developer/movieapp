@@ -7,11 +7,8 @@ interface MovieRepository {
 
     suspend fun getNowPlayingMovies():Results
     suspend fun getUpcomingMovies(): Results
-
     suspend fun getTopRatedMovies(): Results
-
     suspend fun getPopularMovies(): Results
-
     suspend fun getDetailsMovie(idMovie: Int): MovieModel
 }
 

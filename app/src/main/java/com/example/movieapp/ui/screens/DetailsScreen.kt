@@ -27,8 +27,8 @@ import com.example.movieapp.MovieApp
 import com.example.movieapp.R
 import com.example.movieapp.data.AppContainerImplement
 import com.example.movieapp.data.model.Cast
-import com.example.movieapp.ui.DetailsViewModel
-import com.example.movieapp.ui.MovieUiState
+import com.example.movieapp.ui.viewmodel.DetailsViewModel
+import com.example.movieapp.ui.viewmodel.MovieUiState
 import com.example.movieapp.ui.theme.MovieAppTheme
 import com.example.movieapp.ui.theme.Paddings
 import com.example.movieapp.ui.theme.Shapes
@@ -40,7 +40,7 @@ fun DetailsScreen(
     idMovie: String?,
     vm: DetailsViewModel = viewModel(
         factory = DetailsViewModel.DetailsViewModelFactory(
-            AppContainerImplement(MovieApp()).remoterepo, idMovie!!.toInt()
+            AppContainerImplement(MovieApp()).remoteRepo, idMovie!!.toInt()
         )
     )
 ) {

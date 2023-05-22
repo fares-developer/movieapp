@@ -55,7 +55,7 @@ import com.example.movieapp.R
 import com.example.movieapp.data.AppContainerImplement
 import com.example.movieapp.data.DataSource
 import com.example.movieapp.data.model.MovieModel
-import com.example.movieapp.ui.StartViewModel
+import com.example.movieapp.ui.viewmodel.StartViewModel
 import com.example.movieapp.ui.theme.Paddings
 import com.example.movieapp.ui.theme.Shapes
 

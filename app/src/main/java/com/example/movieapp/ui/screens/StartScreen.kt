@@ -17,10 +17,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.movieapp.data.model.MovieModel
-import com.example.movieapp.ui.StartViewModel
+import com.example.movieapp.ui.viewmodel.StartViewModel
 import com.example.movieapp.ui.theme.MovieAppTheme
 import kotlinx.coroutines.delay
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 enum class MovieScreens {

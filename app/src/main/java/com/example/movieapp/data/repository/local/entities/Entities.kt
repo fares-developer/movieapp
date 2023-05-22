@@ -1,9 +1,12 @@
-package com.example.movieapp.data.repository.local
+package com.example.movieapp.data.repository.local.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.example.movieapp.core.CommonUtils
 
 @Entity(tableName = "movies")
+@TypeConverters(CommonUtils.CastConverters::class)
 data class MovieEntity(
     val backdrop_path: String = "",
     @PrimaryKey val id: Int = 1,
@@ -16,12 +19,12 @@ data class MovieEntity(
     val title: String = "",
     val vote_average: Double = 0.0,
     val vote_count: Int = 1,
-    var cast: List<CastEntity> = listOf(),
+    var cast: List<CastEntity>,
     val groupmovie: String = ""
 )
 
 
-
+@TypeConverters(CommonUtils.CastConverters::class)
 data class CastEntity(
     val adult: Boolean,
     val cast_id: Int,

@@ -1,5 +1,6 @@
 package com.example.movieapp.data.repository.local
 
+import com.example.movieapp.data.repository.local.entities.MovieEntity
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRepo {

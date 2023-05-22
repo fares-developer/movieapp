@@ -27,14 +27,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.movieapp.R
-import com.example.movieapp.ui.AuthViewModel
+import com.example.movieapp.ui.viewmodel.AuthViewModel
 import com.example.movieapp.ui.theme.Paddings
 
 @Composable
 fun AuthScreen(
     modifier: Modifier = Modifier,
     navigate: List<() -> Unit>,
-    vm: AuthViewModel = viewModel(),
+    vm: AuthViewModel = viewModel(factory = AuthViewModel.factory),
     navController: NavController,
     destiny: MovieScreens
 ) {

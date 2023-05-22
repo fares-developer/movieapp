@@ -21,7 +21,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.movieapp.R
-import com.example.movieapp.ui.AuthViewModel
+import com.example.movieapp.ui.viewmodel.AuthViewModel
 import com.example.movieapp.ui.theme.MovieAppTheme
 import com.example.movieapp.ui.theme.Paddings
 
@@ -29,9 +29,9 @@ import com.example.movieapp.ui.theme.Paddings
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
-    navController:NavController,
+    navController: NavController,
     destiny: MovieScreens,
-    vm: AuthViewModel = viewModel()
+    vm: AuthViewModel = viewModel(factory = AuthViewModel.factory)
 ) {
 
     val regUIState by vm.regState.collectAsState()
@@ -71,7 +71,8 @@ fun RegisterScreen(
                             imageVector = regUIState.iconEmail,
                             contentDescription = stringResource(id = R.string.email)
                         )
-                    }
+                    },
+                    isError = regUIState.errorMail
                 )
                 OutlinedTextField(
                     modifier = modifier,
@@ -86,7 +87,8 @@ fun RegisterScreen(
                     label = { Text(stringResource(id = R.string.phone_label)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                     maxLines = 1,
-                    singleLine = true
+                    singleLine = true,
+                    isError = regUIState.errorPassword
                 )
                 OutlinedTextField(
                     modifier = modifier,
@@ -110,7 +112,8 @@ fun RegisterScreen(
                     if (regUIState.showPassword) VisualTransformation.None else PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     maxLines = 1,
-                    singleLine = true
+                    singleLine = true,
+                    isError = regUIState.errorCPassword
                 )
                 OutlinedTextField(
                     modifier = modifier,
