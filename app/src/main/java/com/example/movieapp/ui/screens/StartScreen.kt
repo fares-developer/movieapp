@@ -16,9 +16,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.movieapp.core.MyBottomBar
+import com.example.movieapp.core.MyTopAppBar
 import com.example.movieapp.data.model.MovieModel
-import com.example.movieapp.ui.viewmodel.StartViewModel
 import com.example.movieapp.ui.theme.MovieAppTheme
+import com.example.movieapp.ui.viewmodel.StartViewModel
 import kotlinx.coroutines.delay
 import kotlinx.serialization.json.Json
 
@@ -46,7 +48,7 @@ fun StartScreen(
     val backS = backStackEntry?.destination?.route
 
     val currentScreen = when (backS) {
-        "${MovieScreens.Details.name}/{idMovie}" -> {
+        "${MovieScreens.Details.name}/{idMovie}/{group}" -> {
             MovieScreens.Details
         }
 
@@ -54,9 +56,6 @@ fun StartScreen(
             backStackEntry?.destination?.route ?: MovieScreens.Home.name
         )
     }
-    /*val currentScreen = MovieScreens.valueOf(
-        backStackEntry?.destination?.route?: MovieScreens.Home.name
-    )*/
 
     val viewModel: StartViewModel = viewModel()
     val startUIState by viewModel.startState.collectAsState()
@@ -163,10 +162,11 @@ fun StartScreen(
                         })
 
                     composable(
-                        route = "${MovieScreens.Details.name}/{idMovie}",
+                        route = "${MovieScreens.Details.name}/{idMovie}/{group}",
                         content = { backStackEntry ->
                             val idMovie = backStackEntry.arguments?.getString("idMovie")
-                            DetailsScreen(idMovie = idMovie)
+                            val group = backStackEntry.arguments?.getString("group")
+                            DetailsScreen(idMovie = idMovie, group = group)
                         }
                     )
 

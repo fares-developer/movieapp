@@ -10,34 +10,31 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.movieapp.MovieApp
-import com.example.movieapp.data.model.MovieModel
-import com.example.movieapp.data.repository.remote.MovieRepository
+import com.example.movieapp.data.repository.local.entities.MovieEntity
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.io.IOException
+import com.example.movieapp.data.repository.local.MovieRepo as local
 
 class HomeViewModel(
-    private var movieRepo: MovieRepository
+    private var movieRepo: local 
 ) : ViewModel() {
 
     private var _cinemaUiState: MovieUiState by mutableStateOf(MovieUiState.Loading)
     init {getMovies()}
 
     val cinemaUiState get() = _cinemaUiState
-    var listMovies = mutableListOf<List<MovieModel>>()
+    var listMovies = mutableListOf<List<MovieEntity>>()
 
     private fun getMovies() {
         _cinemaUiState = MovieUiState.Loading
         viewModelScope.launch {
             _cinemaUiState = try {
-                val nowPlaying = movieRepo.getNowPlayingMovies()
-                val upcoming = movieRepo.getUpcomingMovies()
-                val toprated = movieRepo.getTopRatedMovies()
-                val popular = movieRepo.getPopularMovies()
                 listMovies = mutableListOf(
-                    nowPlaying.results,
-                    upcoming.results,
-                    toprated.results,
-                    popular.results
+                    movieRepo.getNowPlayingMovies("now_playing").first(),
+                    movieRepo.getUpcomingMovies("upcoming").first(),
+                    movieRepo.getTopRatedMovies("toprated").first(),
+                    movieRepo.getPopularMovies("popular").first()
                 )
                 MovieUiState.Success
             } catch (e: IOException) {
@@ -50,7 +47,7 @@ class HomeViewModel(
         val factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val app = (this[APPLICATION_KEY] as MovieApp)
-                val movieRepo = app.container.remoteRepo
+                val movieRepo = app.container.localRepo
                 HomeViewModel(movieRepo = movieRepo)
             }
         }

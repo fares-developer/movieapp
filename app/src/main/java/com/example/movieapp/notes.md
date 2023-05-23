@@ -22,3 +22,4 @@ hará que sea la pantalla superior visible para el usuario.
 # Tareas Pendientes
 - Implementar Pruebas
 - Implementar diseño para diferentes pantallas
+- Mejorar la lógica de los Cast 

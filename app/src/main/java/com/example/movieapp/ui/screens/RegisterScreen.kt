@@ -21,6 +21,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.movieapp.R
+import com.example.movieapp.core.SocialMedia
 import com.example.movieapp.ui.viewmodel.AuthViewModel
 import com.example.movieapp.ui.theme.MovieAppTheme
 import com.example.movieapp.ui.theme.Paddings

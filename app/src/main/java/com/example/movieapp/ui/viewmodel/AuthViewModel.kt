@@ -68,14 +68,18 @@ class AuthViewModel(
                 _loginState.value.password
             ).isSuccessful
 
-            if(logged){
+            _authState.value =
+                _authState.value.copy(user = auth.currentUser, navigateToHome = true)
+            _authState.value.user = auth.currentUser
+
+            /*if(logged){
                 _authState.value =
                     _authState.value.copy(user = auth.currentUser, navigateToHome = true)
                 _authState.value.user = auth.currentUser
             }else {
                 _loginState.value.errorMail = true
                 _loginState.value.errorPassword = true
-            }
+            }*/
         }
     }
 

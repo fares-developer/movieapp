@@ -1,6 +1,5 @@
 package com.example.movieapp.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,29 +24,34 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.movieapp.MovieApp
 import com.example.movieapp.R
+import com.example.movieapp.core.ErrorScreen
+import com.example.movieapp.core.LoadingScreen
+import com.example.movieapp.core.MyAsyncImage
 import com.example.movieapp.data.AppContainerImplement
-import com.example.movieapp.data.model.Cast
-import com.example.movieapp.ui.viewmodel.DetailsViewModel
-import com.example.movieapp.ui.viewmodel.MovieUiState
+import com.example.movieapp.data.repository.local.entities.CastEntity
 import com.example.movieapp.ui.theme.MovieAppTheme
 import com.example.movieapp.ui.theme.Paddings
 import com.example.movieapp.ui.theme.Shapes
 import com.example.movieapp.ui.theme.readex
+import com.example.movieapp.ui.viewmodel.DetailsViewModel
+import com.example.movieapp.ui.viewmodel.MovieUiState
 
 @Composable
 fun DetailsScreen(
     modifier: Modifier = Modifier,
     idMovie: String?,
+    group: String?,
     vm: DetailsViewModel = viewModel(
         factory = DetailsViewModel.DetailsViewModelFactory(
-            AppContainerImplement(MovieApp()).remoteRepo, idMovie!!.toInt()
+            AppContainerImplement(MovieApp()).localRepo, idMovie!!.toInt(), group!!
         )
     )
 ) {
 
-    val movie by vm.detailMovie.collectAsState()
+    val details by vm.detailMovie.collectAsState()
+    //val casting by vm.casting.collectAsState()
+
     val uiState = vm.uiState
-    Log.d("MovieDetails", movie.toString())
 
     when (uiState) {
         is MovieUiState.Loading -> {
@@ -71,9 +75,9 @@ fun DetailsScreen(
                     verticalArrangement = Arrangement.Top
                 ) {
                     items(1) {
-                        myAsyncImage(
-                            backdrop = movie!!.backdrop_path,
-                            description = movie!!.overview
+                        MyAsyncImage(
+                            backdrop = details.movie.backdrop_path,
+                            description = details.movie.overview
                         )
                         Text(
                             modifier = modifier.padding(
@@ -81,7 +85,7 @@ fun DetailsScreen(
                                 bottom = Paddings.Medium.dp,
                                 start = Paddings.Medium.dp
                             ),
-                            text = movie!!.title,
+                            text = details.movie.title,
                             style = MaterialTheme.typography.headlineSmall,
                             fontFamily = readex,
                             maxLines = 1,
@@ -99,7 +103,7 @@ fun DetailsScreen(
                                 fontFamily = readex
                             )
                             Text(
-                                text = movie.overview,
+                                text = details.movie.overview,
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontFamily = readex,
                                 textAlign = TextAlign.Justify
@@ -120,8 +124,8 @@ fun DetailsScreen(
                             )
                             LazyRow {
                                 items(1) {
-                                    movie!!.credits.cast.forEachIndexed { index, cast ->
-                                        ActorItem(cast = cast)
+                                    details.cast.sortedBy { it.order }.forEach {
+                                        ActorItem(cast = it)
                                     }
                                 }
                             }
@@ -136,7 +140,7 @@ fun DetailsScreen(
 
 
 @Composable
-fun ActorItem(modifier: Modifier = Modifier, cast: Cast) {
+fun ActorItem(modifier: Modifier = Modifier, cast: CastEntity) {
 
     ElevatedCard(
         modifier = modifier
@@ -150,7 +154,7 @@ fun ActorItem(modifier: Modifier = Modifier, cast: Cast) {
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.spacedBy(Paddings.VeryLow.dp)
             ) {
-                myAsyncImage(backdrop = cast.profile_path, description = cast.name)
+                MyAsyncImage(backdrop = cast.profile_path, description = cast.name)
                 Column(
                     modifier = modifier.padding(
                         start = Paddings.Low.dp,

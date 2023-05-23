@@ -45,7 +45,7 @@ class AppContainerImplement(context : Context) : AppContainer {
     }
 
     override val localRepo: MovieRepo by lazy {
-        MovieRepoImpl(MovieDB.getDatabase(context).moviedao())
+        MovieRepoImpl(MovieDB.getDatabase(context).moviedao(), remoteRepo)
     }
 
 }

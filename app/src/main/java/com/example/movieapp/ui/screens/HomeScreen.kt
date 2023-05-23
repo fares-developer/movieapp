@@ -9,11 +9,14 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.movieapp.R
-import com.example.movieapp.data.model.MovieModel
-import com.example.movieapp.ui.viewmodel.HomeViewModel
-import com.example.movieapp.ui.viewmodel.MovieUiState
+import com.example.movieapp.core.ErrorScreen
+import com.example.movieapp.core.LoadingScreen
+import com.example.movieapp.core.MovieRows
+import com.example.movieapp.data.repository.local.entities.MovieEntity
 import com.example.movieapp.ui.theme.MovieAppTheme
 import com.example.movieapp.ui.theme.Paddings
+import com.example.movieapp.ui.viewmodel.HomeViewModel
+import com.example.movieapp.ui.viewmodel.MovieUiState
 
 @Composable
 fun HomeScreen(
@@ -25,7 +28,9 @@ fun HomeScreen(
     val uiState = vm.cinemaUiState
 
     when(uiState){
-        is MovieUiState.Loading -> {LoadingScreen()}
+        is MovieUiState.Loading -> {
+            LoadingScreen()
+        }
         is MovieUiState.Success -> {
             MovieAppTheme {
                 MyRowItems(
@@ -35,7 +40,9 @@ fun HomeScreen(
                 )
             }
         }
-        is MovieUiState.Error ->{ErrorScreen()}
+        is MovieUiState.Error ->{
+            ErrorScreen()
+        }
     }
 
 }
@@ -44,7 +51,7 @@ fun HomeScreen(
 fun MyRowItems(
     modifier: Modifier = Modifier,
     detailsArgs:NavHostController,
-    movies:List<List<MovieModel>> = listOf()
+    movies:MutableList<List<MovieEntity>> = mutableListOf()
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(

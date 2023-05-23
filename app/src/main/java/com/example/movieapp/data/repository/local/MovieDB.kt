@@ -8,10 +8,19 @@ import androidx.room.TypeConverters
 import com.example.movieapp.core.CommonUtils
 import com.example.movieapp.data.repository.local.daos.MovieDao
 import com.example.movieapp.data.repository.local.daos.UserDao
+import com.example.movieapp.data.repository.local.entities.CastEntity
 import com.example.movieapp.data.repository.local.entities.MovieEntity
 import com.example.movieapp.data.repository.local.entities.UserEntity
 
-@Database(entities = [MovieEntity::class, UserEntity::class], version = 1, exportSchema = false)
+@Database(
+    entities = [
+        MovieEntity::class,
+        UserEntity::class,
+        CastEntity::class
+    ],
+    version = 1,
+    exportSchema = false
+)
 @TypeConverters(CommonUtils.CastConverters::class, CommonUtils.MovieCoverters::class)
 abstract class MovieDB : RoomDatabase() {
 

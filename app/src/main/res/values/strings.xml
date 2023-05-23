@@ -18,7 +18,7 @@
     <string name="home">Home</string>
     <string name="authenticate">Authenticate</string>
     <string name="moviedetails">Movie Details</string>
-    <string name="welcome">Bienvenido \na \nMovieApp</string>
+    <string name="welcome">Welcome \nto \nMovieApp</string>
     <string name="register">Register</string>
     <string name="phone">Phone icon</string>
     <string name="email">Email icon</string>
@@ -38,4 +38,5 @@
     <string name="anime">Anime</string>
     <string name="desc_default">\"General description\"</string>
     <string name="now_playing">Now Playing</string>
+    <string name="error_datos">Error al obtener datos</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.movieapp.ui.screens
+package com.example.movieapp.core
 
 import androidx.annotation.StringRes
 import androidx.compose.animation.core.animateFloatAsState
@@ -54,7 +54,8 @@ import coil.request.ImageRequest
 import com.example.movieapp.R
 import com.example.movieapp.data.AppContainerImplement
 import com.example.movieapp.data.DataSource
-import com.example.movieapp.data.model.MovieModel
+import com.example.movieapp.data.repository.local.entities.MovieEntity
+import com.example.movieapp.ui.screens.MovieScreens
 import com.example.movieapp.ui.viewmodel.StartViewModel
 import com.example.movieapp.ui.theme.Paddings
 import com.example.movieapp.ui.theme.Shapes
@@ -64,7 +65,7 @@ fun MovieRows(
     modifier: Modifier = Modifier,
     @StringRes headTitle: Int,
     detailsArgs: NavHostController,
-    movies: List<MovieModel>
+    movies: List<MovieEntity>
 ) {
     Column(
         modifier = modifier.padding(top = Paddings.Medium.dp),
@@ -96,15 +97,16 @@ fun MovieRows(
 @Composable
 fun MyItem(
     modifier: Modifier = Modifier,
-    film: MovieModel,
-    navToDetails: () -> Unit = {},
+    film: MovieEntity,
     detailsArgs: NavHostController,
 ) {
     ElevatedCard(
         modifier = modifier
             .wrapContentSize()
             .clickable(onClick = {
-                detailsArgs.navigate(route = "${MovieScreens.Details.name}/${film.id}")
+                detailsArgs.navigate(
+                    route = "${MovieScreens.Details.name}/${film.id}/${film.groupmovie}"
+                )
             }),
         shape = Shapes.large,
         elevation = CardDefaults.elevatedCardElevation(Paddings.VeryLow.dp),
@@ -230,7 +232,7 @@ fun SocialMedia(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun myAsyncImage(
+fun MyAsyncImage(
     modifier: Modifier = Modifier,
     backdrop: String?,
     description: String
