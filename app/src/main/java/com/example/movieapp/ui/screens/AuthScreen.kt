@@ -40,7 +40,7 @@ fun AuthScreen(
 ) {
 
     val authUiState by vm.authState.collectAsState()
-    if (authUiState.navigateToHome) {
+    if (authUiState.logged) {
         navController.popBackStack()
         navController.navigate(destiny.name)
     }else {

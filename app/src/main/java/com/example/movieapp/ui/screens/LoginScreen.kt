@@ -2,10 +2,15 @@ package com.example.movieapp.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -31,22 +36,21 @@ import com.example.movieapp.core.SocialMedia
 import com.example.movieapp.ui.theme.Paddings
 import com.example.movieapp.ui.viewmodel.AuthViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    viewModel: AuthViewModel = viewModel(factory = AuthViewModel.factory),
+    vm: AuthViewModel = viewModel(factory = AuthViewModel.factory),
     navController: NavController,
     destiny: MovieScreens,
     onclickToSigUp: () -> Unit = {}
 ) {
 
-    val loginUIState by viewModel.loginState.collectAsState()
+    val loginUIState by vm.loginState.collectAsState()
+
     val eventNav = {
-        viewModel.login()
-        if(!loginUIState.errorMail && !loginUIState.errorPassword){
-            navController.popBackStack()
-            navController.navigate(destiny.name)
+        vm.loginWithMail()
+        if (!loginUIState.errorMail && !loginUIState.errorPassword) {
+            vm.navigateToHome(navController, destiny.name)
         }
     }
 
@@ -75,12 +79,16 @@ fun LoginScreen(
             OutlinedTextField(
                 modifier = modifier.fillMaxWidth(),
                 value = loginUIState.mail,
-                onValueChange = { viewModel.updateMail(it, true) },
+                onValueChange = { vm.updateMail(it, true) },
                 label = { Text(stringResource(id = R.string.label_mail)) },
                 maxLines = 1,
                 singleLine = true,
                 trailingIcon = {
-                    IconButton(onClick = { viewModel.showPassword(true, true) }) {
+                    IconButton(onClick = {
+                        vm.showPassword(
+                            showpass = true, screen = true
+                        )
+                    }) {
                         Icon(
                             imageVector = loginUIState.iconEmail,
                             contentDescription = stringResource(id = R.string.visibility_icon)
@@ -92,10 +100,10 @@ fun LoginScreen(
             OutlinedTextField(
                 modifier = modifier.fillMaxWidth(),
                 value = loginUIState.password,
-                onValueChange = { viewModel.updatePassword(it, true) },
+                onValueChange = { vm.updatePassword(it, true) },
                 trailingIcon = {
                     IconButton(onClick = {
-                        viewModel.showPassword(
+                        vm.showPassword(
                             loginUIState.showPassword,
                             true
                         )
@@ -134,7 +142,7 @@ fun LoginScreen(
         ) {
             Text(
                 modifier = modifier
-                    .clickable { viewModel.recoveryPass() },
+                    .clickable { vm.recoveryPass() },
                 text = stringResource(id = R.string.forgot_pass),
                 style = MaterialTheme.typography.bodyLarge.copy(
                     fontWeight = FontWeight.ExtraBold,
@@ -158,7 +166,7 @@ fun LoginScreen(
                 style = MaterialTheme.typography.bodySmall
             )
             //TODO: Icons Social Media
-            SocialMedia(modifier)
+            SocialMedia(modifier, vm)
         }
     }
 }

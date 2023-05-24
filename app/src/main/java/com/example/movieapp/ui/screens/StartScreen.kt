@@ -1,9 +1,7 @@
 package com.example.movieapp.ui.screens
 
-import android.os.Bundle
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -11,18 +9,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.movieapp.core.MyBottomBar
 import com.example.movieapp.core.MyTopAppBar
-import com.example.movieapp.data.model.MovieModel
 import com.example.movieapp.ui.theme.MovieAppTheme
 import com.example.movieapp.ui.viewmodel.StartViewModel
 import kotlinx.coroutines.delay
-import kotlinx.serialization.json.Json
 
 enum class MovieScreens {
     Splash,
@@ -35,7 +30,6 @@ enum class MovieScreens {
     Anime
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StartScreen(
     modifier: Modifier = Modifier,
@@ -45,9 +39,7 @@ fun StartScreen(
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
 
-    val backS = backStackEntry?.destination?.route
-
-    val currentScreen = when (backS) {
+    val currentScreen = when (backStackEntry?.destination?.route) {
         "${MovieScreens.Details.name}/{idMovie}/{group}" -> {
             MovieScreens.Details
         }
@@ -181,22 +173,4 @@ fun StartScreen(
             }
         )
     }
-}
-
-
-//TODO(): implemnting custom navArg type
-
-val MovieNavType = object : NavType<MovieModel>(isNullableAllowed = false) {
-    override fun get(bundle: Bundle, key: String): MovieModel? {
-        return bundle.getParcelable(key) as MovieModel?
-    }
-
-    override fun parseValue(value: String): MovieModel {
-        return Json.decodeFromString(value)
-    }
-
-    override fun put(bundle: Bundle, key: String, value: MovieModel) {
-        bundle.putParcelable(key, value)
-    }
-
 }

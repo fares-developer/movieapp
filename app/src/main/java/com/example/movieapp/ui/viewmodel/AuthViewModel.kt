@@ -1,5 +1,8 @@
 package com.example.movieapp.ui.viewmodel
 
+import android.content.ContentValues.TAG
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Visibility
 import androidx.compose.material.icons.rounded.VisibilityOff
@@ -8,9 +11,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import androidx.navigation.NavController
 import com.example.movieapp.MainActivity
 import com.example.movieapp.MovieApp
-import com.example.movieapp.data.repository.local.UserRepo
 import com.example.movieapp.data.repository.local.UserRepoImpl
 import com.example.movieapp.data.repository.local.entities.UserEntity
 import com.example.movieapp.ui.state.AuthState
@@ -47,59 +50,28 @@ class AuthViewModel(
     private var _regState = MutableStateFlow(RegisterState())
     val regState = _regState.asStateFlow()
 
-    private var auth: FirebaseAuth = Firebase.auth
+    var auth: FirebaseAuth = Firebase.auth
+        private set
 
     init {
         // Check if user is signed in (non-null) and update UI accordingly.
+        _authState.value.user = auth.currentUser
         if (_authState.value.user != null) {
-            reload()
+            _authState.value.logged = true
         }
     }
 
-    private fun reload() {
-        _authState.value.navigateToHome = true
+    private suspend fun addUser() {
+        _authState.value.user = auth.currentUser
+        _authState.value.logged = true
+        userRepo.insert(
+            UserEntity(email = _regState.value.mail, password = _regState.value.password)
+        )
     }
 
-    fun login() {
-        //TODO: Implement Firebase Login
-        viewModelScope.launch{
-            val logged = auth.signInWithEmailAndPassword(
-                _loginState.value.mail,
-                _loginState.value.password
-            ).isSuccessful
-
-            _authState.value =
-                _authState.value.copy(user = auth.currentUser, navigateToHome = true)
-            _authState.value.user = auth.currentUser
-
-            /*if(logged){
-                _authState.value =
-                    _authState.value.copy(user = auth.currentUser, navigateToHome = true)
-                _authState.value.user = auth.currentUser
-            }else {
-                _loginState.value.errorMail = true
-                _loginState.value.errorPassword = true
-            }*/
-        }
-    }
-
-    fun register(){
-        //TODO: Implement Firebase Register
-        viewModelScope.launch {
-            val create = auth.createUserWithEmailAndPassword(
-                _regState.value.mail,
-                _regState.value.confirmPassword
-            ).isSuccessful
-
-            if (create){
-                _authState.value.user = auth.currentUser
-                _authState.value.navigateToHome = true
-            } else {
-                _regState.value.errorMail = true
-                _regState.value.errorPassword = true
-                _regState.value.errorCPassword = true
-            }
-        }
+    fun navigateToHome(nav: NavController, destiny: String) {
+        nav.popBackStack()
+        nav.navigate(destiny)
     }
 
     /**
@@ -140,7 +112,77 @@ class AuthViewModel(
         )
     }
 
+    fun loginWithMail() {
+        //TODO: Implement Firebase Login
+        viewModelScope.launch {
+            auth.signInWithEmailAndPassword(
+                _loginState.value.mail.trim(),
+                _loginState.value.password
+            ).addOnCompleteListener(MainActivity()) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithEmail:success")
+                    viewModelScope.launch { addUser() }
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithEmail:failure", task.exception)
+                    Toast.makeText(
+                        MainActivity().baseContext,
+                        "Authentication failed.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                    viewModelScope.launch {
+                        _loginState.value.errorMail = true
+                        _loginState.value.errorPassword = true
+                    }
+                }
+            }
+        }
+    }
+
+    fun registerWithMail() {
+        //TODO: Implement Firebase Register
+        viewModelScope.launch {
+            auth.createUserWithEmailAndPassword(
+                _regState.value.mail.trim(),
+                _regState.value.password
+            ).addOnCompleteListener(MainActivity()) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "createUserWithEmail:success")
+                    viewModelScope.launch { addUser() }
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                    Toast.makeText(
+                        MainActivity().baseContext,
+                        "Authentication failed.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                    viewModelScope.launch {
+                        _regState.value.errorMail = true
+                        _regState.value.errorPassword = true
+                        _regState.value.errorCPassword = true
+                    }
+                }
+            }
+        }
+
+    }
+
+    fun loginWithGoogle() {
+
+    }
+
+    fun loginWithMeta() {
+        TODO("Not yet implemented")
+    }
+
+    fun loginWithTwitter() {
+        TODO("Not yet implemented")
+    }
+
     fun recoveryPass() {
-        // TODO : Implement Recovery Passowrd
+        TODO("Not yet implemented")
     }
 }

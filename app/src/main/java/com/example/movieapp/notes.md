@@ -23,3 +23,5 @@ hará que sea la pantalla superior visible para el usuario.
 - Implementar Pruebas
 - Implementar diseño para diferentes pantallas
 - Mejorar la lógica de los Cast 
+- El home no sobrevive a los cambios de configuración
+- Controlar los errores en la introducción de credenciales

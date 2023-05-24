@@ -54,11 +54,13 @@ import coil.request.ImageRequest
 import com.example.movieapp.R
 import com.example.movieapp.data.AppContainerImplement
 import com.example.movieapp.data.DataSource
+import com.example.movieapp.data.LogoInfo
 import com.example.movieapp.data.repository.local.entities.MovieEntity
 import com.example.movieapp.ui.screens.MovieScreens
 import com.example.movieapp.ui.viewmodel.StartViewModel
 import com.example.movieapp.ui.theme.Paddings
 import com.example.movieapp.ui.theme.Shapes
+import com.example.movieapp.ui.viewmodel.AuthViewModel
 
 @Composable
 fun MovieRows(
@@ -159,7 +161,7 @@ fun MyBottomBar(
     vm: StartViewModel = viewModel()
 ) {
     NavigationBar(modifier = modifier) {
-        DataSource.iconsTopBar.forEachIndexed { i, iconTopBar ->
+        DataSource.iconsBottomBar.forEachIndexed { i, iconTopBar ->
             NavigationBarItem(
                 //TODO: IMPLEMENT BEHAVIOR SELECTED ICON
                 selected = vm.startState.value.selectedNavItem == i,
@@ -211,24 +213,29 @@ fun ErrorScreen() {
 }
 
 @Composable
-fun SocialMedia(modifier: Modifier = Modifier) {
+fun SocialMedia(modifier: Modifier = Modifier, vm: AuthViewModel) {
     Row(
         modifier = modifier
             .padding(Paddings.Low.dp)
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        content = {
-            for (l in DataSource.logosAuth) {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        painter = painterResource(id = l.image),
-                        contentDescription = l.description,
-                        modifier = modifier.size(Paddings.High.dp)
-                    )
-                }
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        val logosAuth = listOf(
+            LogoInfo(R.drawable.google, "Google Logo") { vm.loginWithGoogle() },
+            LogoInfo(R.drawable.meta, "Apple Logo"){vm.loginWithMeta()},
+            LogoInfo(R.drawable.twitter, "Meta Logo"){vm.loginWithTwitter()},
+        )
+
+        for (l in logosAuth) {
+            IconButton(onClick = { l.action }) {
+                Icon(
+                    painter = painterResource(id = l.image),
+                    contentDescription = l.description,
+                    modifier = modifier.size(Paddings.High.dp)
+                )
             }
         }
-    )
+    }
 }
 
 @Composable

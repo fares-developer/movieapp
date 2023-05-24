@@ -10,9 +10,10 @@ import com.example.movieapp.R
 import com.google.firebase.auth.FirebaseUser
 
 data class AuthState(
-    var user:FirebaseUser? = null,
-    var navigateToHome: Boolean = false
+    var user: FirebaseUser? = null,
+    var logged: Boolean = false,
 )
+
 data class LoginState(
     @StringRes var buttonLabel: Int = R.string.login,
     var mail: String = "",

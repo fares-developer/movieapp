@@ -1,9 +1,12 @@
 package com.example.movieapp.ui.screens
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -22,11 +25,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.movieapp.R
 import com.example.movieapp.core.SocialMedia
-import com.example.movieapp.ui.viewmodel.AuthViewModel
 import com.example.movieapp.ui.theme.MovieAppTheme
 import com.example.movieapp.ui.theme.Paddings
+import com.example.movieapp.ui.viewmodel.AuthViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
@@ -36,10 +38,13 @@ fun RegisterScreen(
 ) {
 
     val regUIState by vm.regState.collectAsState()
+
     val eventNav = {
-        vm.register()
-        navController.popBackStack()
-        navController.navigate(destiny.name)
+        vm.registerWithMail()
+        if (!regUIState.errorMail && !regUIState.errorCPassword) {
+            vm.navigateToHome(navController, destiny.name)
+        }
+
     }
 
 
@@ -157,7 +162,7 @@ fun RegisterScreen(
                 text = stringResource(id = R.string.use_social_account_tologin),
                 style = MaterialTheme.typography.bodySmall
             )
-            SocialMedia()
+            SocialMedia(modifier, vm)
         }
     }
 }
