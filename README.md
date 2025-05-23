@@ -7,8 +7,6 @@ Descubre detalles importantes.
 ---
 
 ## 📸 Capturas de pantalla
-
-> *(Incluye aquí tus imágenes o GIFs del diseño de la app)*
 ![Figma design](figma_design_1.png)
 ![Figma design](figma_design_2.png)
 
