@@ -25,7 +25,7 @@ Descubre detalles importantes.
 - **Lenguaje:** Kotlin
 - **Frontend:** Jetpack compose
 - **API:** [TMDb](https://www.themoviedb.org/)
-- **Backend:** Kotlin Coroutines, viewmodel, Room, Retrofit
+- **Backend:** Firebase, Kotlin Coroutines, viewmodel, Room, Retrofit
 
 ---
 
