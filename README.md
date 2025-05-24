@@ -28,6 +28,16 @@ Descubre detalles importantes.
 - **Backend:** Firebase, Kotlin Coroutines, viewmodel, Room, Retrofit
 
 ---
+## ✅ Tareas pendientes
+
+- [x] Crear estructura del proyecto
+- [x] Conectar con la API de TMDb
+- [ ] Mejorar arranque de la app
+- [ ] Validar correctamente la autenticación de los usuarios
+- [ ] Preparar APK firmado para pruebas
+- [ ] Subir demo online
+- [ ] Añadir Vista de Anime y TV
+- [ ] Implementar ajustes y gestión de cuentas de usuario
 
 ---
 
