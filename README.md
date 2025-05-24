@@ -28,7 +28,7 @@ Descubre detalles importantes.
 - **Backend:** Firebase, Kotlin Coroutines, viewmodel, Room, Retrofit
 
 ---
-## ✅ Tareas pendientes
+## ✅ Tareas
 
 - [x] Crear estructura del proyecto
 - [x] Conectar con la API de TMDb
@@ -41,8 +41,9 @@ Descubre detalles importantes.
 
 ---
 
-## ⚠️ Advertencia sobre la instalación del APK
+## ⚠️ Advertencia sobre la instalación del APK y la ejecución del código
 
+> Para poder ejecutar el código en Android Studio se necesitan credenciales de firebase.
 > Al instalar la app mediante el archivo APK, Android puede mostrar una advertencia de seguridad.  
 > Esto **no significa que la app sea peligrosa**, sino que:
 >
