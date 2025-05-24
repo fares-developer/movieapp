@@ -4,7 +4,7 @@ import com.example.movieapp.fake.FakeDataSource
 import com.example.movieapp.fake.FakeRemoteMovieRepo
 import com.example.movieapp.rules.TestDispatcherRule
 import com.example.movieapp.ui.HomeViewModel
-import com.example.movieapp.ui.MovieUiState
+import com.example.movieapp.ui.MovieUiState // Ensure this import is present
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -18,16 +18,21 @@ class HomeViewModelTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun homeViewModel_getUpcoming_verifyUiStateSuccess() = runTest {
-        val homeVM = HomeViewModel(
-            movieRepo = FakeRemoteMovieRepo()
-        )
+    fun homeViewModel_getMovies_verifyUiStateIsSuccess() { // Changed = to {
+        runTest { // Enclosed in braces
+            val homeVM = HomeViewModel(
+                movieRepo = FakeRemoteMovieRepo()
+            )
+            // getMovies is called in init, runTest will complete its coroutine
 
-        assertEquals(
-            MovieUiState.Success(
-                "El total de elementos es ${FakeDataSource.upcomingList.results.size}"
-            ),
-            homeVM.cinemaUiState
-        )
+            // Assert that the UI state is the Success object
+            assertEquals(MovieUiState.Success, homeVM.cinemaUiState)
+
+            // Optionally, assert the contents of listMovies separately
+            val expectedNowPlaying = FakeDataSource.upcomingList
+            // ... and so on for other categories
+            assertEquals(expectedNowPlaying, homeVM.listMovies[0])
+            // ...
+        }
     }
 }

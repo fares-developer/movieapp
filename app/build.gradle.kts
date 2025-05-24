@@ -1,11 +1,14 @@
+import org.gradle.kotlin.dsl.testImplementation // This import is fine, but not strictly necessary here.
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    // Consider aligning this version with your main Kotlin plugin version if possible,
+    // or managing it via the version catalog.
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
     id("kotlin-parcelize")
     alias(libs.plugins.google.gms.google.services)
-
 }
 
 android {
@@ -79,14 +82,34 @@ dependencies {
     implementation(libs.coil.compose)
 
 
-
     // Testing
-    testImplementation(libs.junit)
+    // For local unit tests
+    testImplementation(libs.junit) // Use the version from libs catalog
+    // Optional: For Mockito if you are using mocking
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
+    // In your build.gradle.kts (Module :app)
+    testImplementation(libs.kotlinx.coroutines.test) // Or the latest stable version
+
+    // For Android Instrumented tests
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+
+    // DebugImplementation for Compose tooling
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-}
 
+
+    // Other dependencies...
+    // Ensure any other dependencies are correctly placed here.
+
+    // Removed:
+    // val testImplementation = null
+    // testImplementation "junit:junit:4.13.2" // This was a duplicate
+
+    // For AndroidX Test libraries (if you're using them, though less common for pure unit tests)
+    // testImplementation "androidx.test:core-ktx:1.4.0"
+    // testImplementation "androidx.test.ext:junit-ktx:1.1.3"
+}
